@@ -19,14 +19,14 @@ func MustLoadConfig(envPrefix string, configPath string, configurations any) *vi
 	if configPath == "" {
 		if configEnv := os.Getenv(consts.ConfigPath); configEnv == "" {
 			config = consts.DefaultConfigPath
-			fmt.Printf("can not find viper path or viper path environment variable, using default viper path: %s\n", config)
+			fmt.Printf("can not find configuration file path or the environment variable 'CONFIG_PATH', using default configuration file path: %s\n", config)
 		} else {
 			config = configEnv
-			fmt.Printf("get viper path from env:%s, value:%s\n", consts.ConfigPath, config)
+			fmt.Printf("get configuration file from env:%s, value:%s\n", consts.ConfigPath, config)
 		}
 	} else {
 		config = configPath
-		fmt.Printf("you are using viper file from: %v\n", config)
+		fmt.Printf("you are using configuration file from: %v\n", config)
 	}
 
 	v := viper.New()
@@ -41,7 +41,7 @@ func MustLoadConfig(envPrefix string, configPath string, configurations any) *vi
 	// Read Config from disk and env vars
 	err := v.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error viper file: %s \n", err))
+		panic(fmt.Errorf("Fatal error configuration file: %s \n", err))
 	}
 	fmt.Println("Config loaded successfully...")
 
