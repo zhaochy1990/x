@@ -2,7 +2,13 @@
 
 Usage:
 
+```
+go get -u "github.com/zhaochy1990/x/viper"
+```
+
 ```golang
+import "github.com/zhaochy1990/x/viper"
+
 // define your config here
 type Config struct {
   xxxx

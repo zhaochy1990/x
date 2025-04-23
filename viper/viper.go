@@ -7,13 +7,13 @@ import (
 
 	"github.com/qinrundev/x/consts"
 	"github.com/spf13/viper"
+	"github.com/go-playground/validator/v10"
 )
 
-// MustLoadConfig load configurations from yml viper file
-// All services should provide a configuration file along with its docker images.
-// And all configurations inside the viper file can be over write by corresponding environment variable
-// It’s important to recognize that Viper treats ENV variables as case-sensitive.
-func MustLoadConfig(envPrefix string, configPath *string, configurations interface{}) *viper.Viper {
+// MustLoadConfig load configurations from yml configuration file. 
+// All configurations in the yaml file can be over write by corresponding environment variable.
+// It’s important to recognize that the ENV variables are case-sensitive.
+func MustLoadConfig(envPrefix string, configPath *string, configurations any) *viper.Viper {
 	var config string
 	if configPath == nil {
 		if configEnv := os.Getenv(consts.ConfigPath); configEnv == "" {
@@ -47,6 +47,12 @@ func MustLoadConfig(envPrefix string, configPath *string, configurations interfa
 	err = v.Unmarshal(&configurations)
 	if err != nil {
 		panic(fmt.Errorf("Fatal unmarshal configurations: %s \n", err))
+	}
+
+	validate := validator.New()
+	err = validate.Struct(configurations)
+	if err != nil {
+		panic(fmt.Errorf("Failed to validate configurations: %s \n", err))
 	}
 
 	return v
