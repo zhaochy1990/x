@@ -6,7 +6,6 @@ toolchain go1.24.2
 
 require (
 	github.com/go-playground/validator/v10 v10.26.0
-	github.com/qinrundev/x v0.4.2
 	github.com/spf13/viper v1.20.1
 	go.uber.org/zap v1.27.0
 )

@@ -5,12 +5,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/qinrundev/x/consts"
-	"github.com/spf13/viper"
 	"github.com/go-playground/validator/v10"
+	"github.com/spf13/viper"
+	"github.com/zhaochy1990/x/consts"
 )
 
-// MustLoadConfig load configurations from yml configuration file. 
+// MustLoadConfig load configurations from yml configuration file.
 // All configurations in the yaml file can be over write by corresponding environment variable.
 // It’s important to recognize that the ENV variables are case-sensitive.
 func MustLoadConfig(envPrefix string, configPath *string, configurations any) *viper.Viper {
