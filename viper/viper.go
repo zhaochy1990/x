@@ -13,9 +13,10 @@ import (
 // MustLoadConfig load configurations from yml configuration file.
 // All configurations in the yaml file can be over write by corresponding environment variable.
 // It’s important to recognize that the ENV variables are case-sensitive.
-func MustLoadConfig(envPrefix string, configPath *string, configurations any) *viper.Viper {
+// Using below environment variables to override the default behavior
+func MustLoadConfig(envPrefix string, configPath string, configurations any) *viper.Viper {
 	var config string
-	if configPath == nil {
+	if configPath == "" {
 		if configEnv := os.Getenv(consts.ConfigPath); configEnv == "" {
 			config = consts.DefaultConfigPath
 			fmt.Printf("can not find viper path or viper path environment variable, using default viper path: %s\n", config)
@@ -24,7 +25,7 @@ func MustLoadConfig(envPrefix string, configPath *string, configurations any) *v
 			fmt.Printf("get viper path from env:%s, value:%s\n", consts.ConfigPath, config)
 		}
 	} else {
-		config = *configPath
+		config = configPath
 		fmt.Printf("you are using viper file from: %v\n", config)
 	}
 
@@ -44,13 +45,12 @@ func MustLoadConfig(envPrefix string, configPath *string, configurations any) *v
 	}
 	fmt.Println("Config loaded successfully...")
 
-	err = v.Unmarshal(&configurations)
+	err = v.Unmarshal(configurations)
 	if err != nil {
 		panic(fmt.Errorf("Fatal unmarshal configurations: %s \n", err))
 	}
 
-	validate := validator.New()
-	err = validate.Struct(configurations)
+	err = validator.New().Struct(configurations)
 	if err != nil {
 		panic(fmt.Errorf("Failed to validate configurations: %s \n", err))
 	}
